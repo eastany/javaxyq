@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.javaxyq.profile.impl;
 
 import java.io.File;
@@ -32,14 +29,14 @@ import com.javaxyq.util.SuffixFilenameFilter;
 public class ProfileManagerImpl implements ProfileManager {
 
 	private MedicineItemDAOImpl medicineDAO;
-	
+
 	public ProfileManagerImpl() {
 		medicineDAO = new MedicineItemDAOImpl();
 //		sceneDAO = new SceneDAOImpl();
 //		sceneNpcDAO = new SceneNpcDAOImpl();
 //		sceneTeleporterDAO = new SceneTeleporterDAOImpl();
 	}
-	
+
 	@Override
 	public List<Profile> listProfiles() {
 		List<Profile> profiles = new ArrayList<Profile>();
@@ -99,7 +96,7 @@ public class ProfileManagerImpl implements ProfileManager {
 			}
 			ois.close();
 			System.out.println("loaded game data: "+new java.util.Date());
-			
+
 			Profile profile = new Profile();
 			profile.setName(trimSuffix(file.getName()));
 			profile.setFilename(file.getAbsolutePath());
@@ -183,7 +180,7 @@ public class ProfileManagerImpl implements ProfileManager {
 		}
 		return file;
 	}
-	
+
 	private String trimSuffix(String filename) {
 		filename = filename.replace('\\', '/');
 		int p1 = filename.indexOf("/");

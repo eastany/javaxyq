@@ -852,7 +852,7 @@ public class BattleCanvas extends Canvas implements MouseListener, MouseMotionLi
 	}
 
 	protected String getMusic() {
-		return "music/2003.mp3";
+		return "res/music/2003.mp3";
 	}
 	/**
 	 * @param target2

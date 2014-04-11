@@ -25,7 +25,7 @@ import com.javaxyq.widget.Player;
 import com.javaxyq.widget.Sprite;
 
 public class mainwin extends PanelHandler implements ActionListener{
-	
+
 	private Label sceneLabel;
 	private Label coordinateLabel;
 	private Label hpTrough ;
@@ -49,7 +49,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 		expTrough = (Label) panel.findCompByName("player_exp");
 		chatInput = (TextField) panel.findCompByName("chat_input");
 		chatInput.addActionListener(this);
-		
+
 		updateCoords();
 		setAutoUpdate(true);
 	}
@@ -57,7 +57,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 	public void dispose(PanelEvent evt) {
 		System.out.println("dispose: ui.mainwin ");
 	}
-	
+
 	public void update(PanelEvent evt) {
 		if (context.getPlayer() == null)
 			return;
@@ -97,9 +97,9 @@ public class mainwin extends PanelHandler implements ActionListener{
 			coordinateLabel.setText(strCoordinate);
 			sceneLabel.setText(sceneCanvas.getSceneName());
 		}
-		
+
 	}
-	
+
 	/**
 	 * ²¹³äplayer_hp
 	 */
@@ -128,7 +128,7 @@ public class mainwin extends PanelHandler implements ActionListener{
 			}
 		}
 	}
-	
+
 	/**
 	 * ²¹³äplayer_mpÖµ
 	 * @param evt
@@ -158,14 +158,14 @@ public class mainwin extends PanelHandler implements ActionListener{
 			}
 		}
 	}
-	
+
 	/**
 	 * ²¹³äsummonÆøÑª
 	 */
 	public void eke_summon_hp(ActionEvent evt) {
 		System.out.println("²¹³äsummonÆøÑª");
 	}
-	
+
 	/**
 	 * ²¹³äsummonÄ§·¨Öµ
 	 * @param evt

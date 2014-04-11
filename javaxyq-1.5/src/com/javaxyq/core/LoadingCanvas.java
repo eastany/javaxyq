@@ -88,7 +88,7 @@ public class LoadingCanvas extends Canvas {
 	protected String getMusic() {
 		Random rand = new Random();
 		String[] files = new String[] {"1091","1514","1070","1193"};
-		return ("music/"+files[rand.nextInt(files.length)]+".mp3");
+		return ("res/music/"+files[rand.nextInt(files.length)]+".mp3");
 	}
 
 }

@@ -43,7 +43,14 @@ public class SpriteFactory {
 	}
 	
 	public static Sprite loadSprite(String filename) {
-		return loadSprite(filename, null);
+		if(filename.startsWith("res") || filename.startsWith("/res")) {
+			return loadSprite(filename, null);
+		}
+		if(filename.startsWith("/")) {
+			return loadSprite("res"+filename, null);
+		}
+		return loadSprite("res/"+filename, null);
+		
 	}
 
 	public static Sprite createSprite(InputStream is) throws Exception {
@@ -97,6 +104,14 @@ public class SpriteFactory {
 	}
 
 	public static Image loadImage(String filename) {
+		if(!filename.startsWith("res")){
+			if(filename.startsWith("/")){
+				filename = "res"+filename;
+			}else{
+				filename = "res/"+filename;
+			}
+			
+		}
 		if (filename.endsWith(".was")||filename.endsWith(".tcp")) {
 			Sprite s = loadSprite(filename);
 			return (s == null) ? null : s.getImage();

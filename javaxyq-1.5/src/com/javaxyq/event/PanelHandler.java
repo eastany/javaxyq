@@ -1,10 +1,3 @@
-/*
- * JavaXYQ Source Code
- * by kylixs
- * at 2009-11-26
- * please visit http://javaxyq.googlecode.com
- * or mail to kylixs@qq.com
- */
 package com.javaxyq.event;
 
 import java.lang.reflect.InvocationTargetException;
@@ -29,7 +22,7 @@ import com.javaxyq.widget.Player;
  * @date 2009-11-26 create
  */
 public abstract class PanelHandler implements PanelListener{
-	
+
 	protected Panel panel;
 	private boolean autoUpdate; 
 	private Timer timer;
@@ -40,7 +33,7 @@ public abstract class PanelHandler implements PanelListener{
 	protected DataManager dataManager;
 	protected GameCanvas canvas;
 	protected GameWindow window;
-	
+
 	public void actionPerformed(ActionEvent evt) {
 		try {
 			String cmd = evt.getCommand();
@@ -54,7 +47,7 @@ public abstract class PanelHandler implements PanelListener{
 			e.printStackTrace();
 		}
 	}
-	
+
 	synchronized public void dispose(PanelEvent evt) {
 		System.out.println("dispose: "+this.getClass().getName());
 		if(this.timer!=null) {
@@ -62,7 +55,7 @@ public abstract class PanelHandler implements PanelListener{
 			this.timer = null;
 		}
 	}
-	
+
 	public void initial(PanelEvent evt) {
 		System.out.println("initial: "+this.getClass().getName());
 		panel = (Panel) evt.getSource();
@@ -72,15 +65,16 @@ public abstract class PanelHandler implements PanelListener{
 		helper = window.getHelper();
 		dataManager = application.getDataManager();
 		canvas = window.getCanvas();
-	}	
-	synchronized public void update(PanelEvent evt) {
-		
 	}
-	
+
+	synchronized public void update(PanelEvent evt) {
+
+	}
+
 	public void close(ActionEvent evt) {
 		ApplicationHelper.getApplication().getContext().getWindow().getHelper().hideDialog(panel);
 	}
-	
+
 	public void help(ActionEvent evt) {
 		System.out.println("help: "+this.getClass().getName());
 	}
@@ -104,7 +98,7 @@ public abstract class PanelHandler implements PanelListener{
 		}
 		this.autoUpdate = b;
 	}
-	
+
 	public boolean isAutoUpdate() {
 		return autoUpdate;
 	}	

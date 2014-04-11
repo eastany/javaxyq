@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.javaxyq.ui;
 
 import java.awt.Color;
@@ -41,310 +38,310 @@ import com.javaxyq.widget.Animation;
 import com.javaxyq.widget.Cursor;
 
 /**
- * ÓÎÏ·UI°ïÖúÀà
+ * æ¸¸æˆUIå¸®åŠ©ç±»
  * @author dewitt
  */
 public class UIHelper {
-	/**
-	 * ³õÊ¼»¯UI²ÎÊı
-	 */
-	static {
-		LightweightToolTipManager.sharedInstance().setInitialDelay(100);
-		UIManager.put("ToolTip.border", new BorderUIResource(new CompoundBorder(
-				new RoundLineBorder(Color.WHITE,1, 8, 8),new EmptyBorder(3, 3, 3, 3))));
-		UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
-		//		UIManager.put("ToolTip.background", new ColorUIResource(new Color(255,
-		//				255, 224)));
-		UIManager.put("ToolTip.font", new FontUIResource(UIUtils.TEXT_FONT));
-		//UIManager.put("ToolTipUI", "com.javaxyq.ui.TranslucentTooltipUI");
-		
-		UIManager.put("GameLabelUI", "com.javaxyq.ui.GameLabelUI");
-		UIManager.put("GameButtonUI", "com.javaxyq.ui.GameButtonUI");
-	}	
-	
-	private List<PromptLabel> prompts = new ArrayList<PromptLabel>();
-	private static Map<String, Cursor>cursors = new HashMap<String, Cursor>();
-	
-	private boolean debug = false;
-	private GameWindow window;
-	private ScriptEngine scriptEngine ;
-	public UIHelper(GameWindow window) {
-		super();
-		this.window = window;
-		this.scriptEngine = DefaultScript.getInstance();
-	}
+    /**
+     * åˆå§‹åŒ–UIå‚æ•°
+     */
+    static {
+        LightweightToolTipManager.sharedInstance().setInitialDelay(100);
+        UIManager.put("ToolTip.border", new BorderUIResource(new CompoundBorder(
+                new RoundLineBorder(Color.WHITE,1, 8, 8),new EmptyBorder(3, 3, 3, 3))));
+        UIManager.put("ToolTip.foreground", new ColorUIResource(Color.WHITE));
+        //		UIManager.put("ToolTip.background", new ColorUIResource(new Color(255,
+        //				255, 224)));
+        UIManager.put("ToolTip.font", new FontUIResource(UIUtils.TEXT_FONT));
+        //UIManager.put("ToolTipUI", "com.javaxyq.ui.TranslucentTooltipUI");
 
-	public boolean isDebug() {
-		return debug;
-	}
+        UIManager.put("GameLabelUI", "com.javaxyq.ui.GameLabelUI");
+        UIManager.put("GameButtonUI", "com.javaxyq.ui.GameButtonUI");
+    }
 
-	public void setDebug(boolean debug) {
-		this.debug = debug;
-	}
+    private List<PromptLabel> prompts = new ArrayList<PromptLabel>();
+    private static Map<String, Cursor>cursors = new HashMap<String, Cursor>();
 
-	/**
-	 * µ¯³öÌáÊ¾ĞÅÏ¢
-	 * @param text ÌáÊ¾ÄÚÈİ
-	 * @param delay ÑÓÊ±¹Ø±ÕÊ±¼ä(ms)
-	 */
-	public void prompt(String text,long delay) {
-		final PromptLabel label = new PromptLabel(text);
-		int offset = prompts.size()*15;
-		label.setLocation( (640-label.getWidth())/2+offset, 180+offset);
-		final Container container = getCanvasComponent();
-		container.add(label,0);
-		prompts.add(label);
-		
-		TimerTask task = new TimerTask() {
-			@Override
-			public void run() {
-				container.remove(label);
-				prompts.set(prompts.indexOf(label),null);
-				boolean empty = true;
-				for (int i = 0; i < prompts.size(); i++) {
-					if(prompts.get(i)!=null) {
-						empty = false;
-					}
-				}
-				if(empty) {
-					prompts.clear();
-				}
-			}
-		};
-		new Timer().schedule(task, delay);
-	}
-	
-	/**
-	 * ÏÔÊ¾tooltip
-	 * @param c
-	 * @param src
-	 * @param e
-	 */
-	public void showToolTip(JComponent c,JComponent src,MouseEvent e) {
-		final Container canvas = getCanvasComponent();
-		Point p = SwingUtilities.convertPoint(src, src.getToolTipLocation(e), canvas);
-		p.translate(20, 30);
-		p.x = (p.x+c.getWidth() < canvas.getWidth()-2)?p.x:(canvas.getWidth()-c.getWidth()-2);
-		p.y = (p.y+c.getHeight() < canvas.getHeight() - 2)?p.y:(canvas.getHeight()-c.getHeight()-2);
-		c.setLocation(p);
-		canvas.add(c,0);
-	}
-	
-	/**
-	 * Òş²Øtooltip
-	 * @param c
-	 */
-	public void hideToolTip(JComponent c) {
-		final Container canvas = getCanvasComponent();
-		canvas.remove(c);		
-	}
-	
-	/**
-	 * ÉèÖÃ¸úËæÊó±êÒ»ÆğÒÆ¶¯µÄ¶ÔÏó
-	 * @param c
-	 * @param offset ÓëÊó±êµÄÏà¶ÔÎ»ÖÃ
-	 */
-	public void setMovingObject(Animation anim,Point offset) {
-		GameCanvas canvas = window.getCanvas();
-		canvas.setMovingObject(anim, offset);
-	}
-	
-	/**
-	 * É¾³ıÊó±êËæ¶¯¶ÔÏó
-	 */
-	public void removeMovingObject() {
-		GameCanvas canvas = window.getCanvas();
-		canvas.removeMovingObject();
-	}
-	
-	/**
-	 * ²éÕÒ×î½üµÄÃæ°å
-	 * @param c
-	 * @return
-	 */
-	public Panel findPanel(Component c) {
-		for(;c!=null;) {
-			if (c instanceof Panel) {
-				break;
-			}
-			c=c.getParent();
-		} 
-		return (Panel) c;
-	}
-	/**
-	 * ÏÔÊ¾»òÒş²ØÖ¸¶¨¶Ô»°¿ò
-	 * 
-	 * @param autoSwap
-	 */
-	public void showHideDialog(Panel dialog) {
-		if (dialog != null) {
-			Container canvas = getCanvasComponent();
-			if (dialog.getParent() == canvas) {
-				hideDialog(dialog);
-			} else {
-				showDialog(dialog);
-			}
-		}
-	}
-	
-	/**
-	 * ÏÔÊ¾Ãæ°å
-	 * @param dialog
-	 */
-	public void showDialog(Panel dialog) {
-		Container canvas = getCanvasComponent();
-		if (dialog != null && dialog.getParent() != canvas) {
-			//×èÈûÖ´ĞĞ³õÊ¼»¯ÊÂ¼ş
-			dialog.handleEvent(new PanelEvent(dialog,"initial"));
-			canvas.add(dialog,0);
-		}
-	}
-	public void showModalDialog(final Panel dialog) {
-		System.out.println("showModalDialog: "+Thread.currentThread().getName());
-		Container canvas = getCanvasComponent();
-		if (dialog != null && dialog.getParent() != canvas) {
-			PanelListener listener = scriptEngine.loadUIScript(dialog.getName());
-			if(listener!=null) {
-				dialog.removeAllPanelListeners();
-				dialog.addPanelListener(listener);
-			}
-			//×èÈûÖ´ĞĞ³õÊ¼»¯ÊÂ¼ş
-			dialog.handleEvent(new PanelEvent(dialog,"initial"));
-			canvas.add(dialog);
-			canvas.setComponentZOrder(dialog, 0);
-			EventDispatcher.pumpEvents(Thread.currentThread(), new Conditional() {
-				@Override
-				public boolean evaluate() {
-					return (dialog.getParent()!=null && dialog.isVisible());
-				}
-			});
-			//TODO need to interrupt pump after close the panel!
-		}
-		System.out.println("exit showModalDialog: "+Thread.currentThread().getName());
-	}
-	
-	/**
-	 * Òş²ØÃæ°å
-	 * @param dialog
-	 */
-	public void hideDialog(Panel dialog) {
-		if (dialog != null) {
-			Container canvas = getCanvasComponent();
-			if (dialog.getParent() == canvas) {
-				canvas.remove(dialog);
-				dialog.fireEvent(new PanelEvent(dialog,"dispose"));
-				DialogFactory.dispose(dialog.getName(),dialog);
-			}
-		}
-	}
-	
-	/**
-	 * ÏÔÊ¾Ãæ°å
-	 * @param id
-	 */
-	public void showDialog(String id) {
-		Panel dlg = null;
-		dlg = getDialog(id);
-		if(dlg!=null) {
-			showDialog(dlg);
-		}else {
-			System.err.println("»ñÈ¡DialogÊ§°Ü£º "+id);
-		}
-	}
+    private boolean debug = false;
+    private GameWindow window;
+    private ScriptEngine scriptEngine ;
+    public UIHelper(GameWindow window) {
+        super();
+        this.window = window;
+        this.scriptEngine = DefaultScript.getInstance();
+    }
 
-	/**
-	 * »ñÈ¡Dialog£¬Èç¹û´ËDialog»¹Ã»ÓĞ¼ÓÔØÔò×Ô¶¯¼ÓÔØ
-	 * @param id
-	 * @return
-	 */
-	public Panel getDialog(String id) {
-		Panel dlg;
-		if(isDebug()) {//Èç¹ûÊÇµ÷ÊÔ×´Ì¬£¬Ã¿´Î¶¯Ì¬¼ÓÔØ
-			dlg = DialogFactory.createDialog(id);
-			PanelListener listener = scriptEngine.loadUIScript(id);
-			if(listener!=null) {
-				dlg.removeAllPanelListeners();
-				dlg.addPanelListener(listener);
-			}
-		}else {
-			dlg = DialogFactory.getDialog(id,true);
-		}
-		return dlg;
-	}
-	
-	public void showHideDialog(String id) {
-		Panel dlg = DialogFactory.getDialog(id,false);
-		System.out.println("showHideDialog: "+id+", "+dlg);
-		if(dlg!=null && dlg.isShowing()) {
-			hideDialog(dlg);
-		}else {
-			showDialog(id);
-		}
-	}
-	
-	/**
-	 * Òş²ØÃæ°å
-	 * @param id
-	 */
-	public void hideDialog(String id) {
-		if(id!=null) {
-			Panel dlg = DialogFactory.getDialog(id,false);
-			if(dlg!=null)hideDialog(dlg);
-		}
-	}
-	
-	/**
-	 * »ñµÃµ±Ç°µÄtalkPanel
-	 * @return
-	 */
-	public TalkPanel getTalkPanel() {
-		Component comp = getCanvasComponent().getComponent(0);
-		if (comp instanceof TalkPanel) {
-			return (TalkPanel) comp;
-		}
-		return null;
-	}
+    public boolean isDebug() {
+        return debug;
+    }
 
-	private Container getCanvasComponent() {
-		return window.getCanvas().getComponent();
-	}
-	
-	public static Cursor getCursor(String cursorId) {
-		Cursor cursor = cursors.get(cursorId);
-		if(cursor==null) {
-			boolean effect = Cursor.DEFAULT_CURSOR.equals(cursorId);
-			cursor = new Cursor(cursorId, effect);
-			cursors.put(cursorId, cursor);
-		}
-		return cursor;
-	}
-	
-	public static void removeAllMouseListeners(Component comp) {
-		MouseListener[] mouseListeners = comp.getMouseListeners();
-		for (MouseListener mouseListener : mouseListeners) {
-			comp.removeMouseListener(mouseListener);
-		}
-		MouseMotionListener[] motionListeners = comp.getMouseMotionListeners();
-		for (MouseMotionListener motionListener : motionListeners) {
-			comp.removeMouseMotionListener(motionListener);
-		}
-		MouseWheelListener[] wheelListeners = comp.getMouseWheelListeners();
-		for (MouseWheelListener wheelListener : wheelListeners) {
-			comp.removeMouseWheelListener(wheelListener);
-		}
-	}
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
 
-	/** global action map */
-	//private static ActionMap actionMap = new ActionMap();
-	//private static InputMap inputMap = new InputMap();
-	//private static LoadingCanvas loadingCanvas;
-	//private static SceneCanvas sceneCanvas;
-	//private static BattleCanvas battleCanvas;
+    /**
+     * å¼¹å‡ºæç¤ºä¿¡æ¯
+     * @param text æç¤ºå†…å®¹
+     * @param delay å»¶æ—¶å…³é—­æ—¶é—´(ms)
+     */
+    public void prompt(String text,long delay) {
+        final PromptLabel label = new PromptLabel(text);
+        int offset = prompts.size()*15;
+        label.setLocation( (640-label.getWidth())/2+offset, 180+offset);
+        final Container container = getCanvasComponent();
+        container.add(label,0);
+        prompts.add(label);
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                container.remove(label);
+                prompts.set(prompts.indexOf(label),null);
+                boolean empty = true;
+                for (int i = 0; i < prompts.size(); i++) {
+                    if(prompts.get(i)!=null) {
+                        empty = false;
+                    }
+                }
+                if(empty) {
+                    prompts.clear();
+                }
+            }
+        };
+        new Timer().schedule(task, delay);
+    }
+
+    /**
+     * æ˜¾ç¤ºtooltip
+     * @param c
+     * @param src
+     * @param e
+     */
+    public void showToolTip(JComponent c,JComponent src,MouseEvent e) {
+        final Container canvas = getCanvasComponent();
+        Point p = SwingUtilities.convertPoint(src, src.getToolTipLocation(e), canvas);
+        p.translate(20, 30);
+        p.x = (p.x+c.getWidth() < canvas.getWidth()-2)?p.x:(canvas.getWidth()-c.getWidth()-2);
+        p.y = (p.y+c.getHeight() < canvas.getHeight() - 2)?p.y:(canvas.getHeight()-c.getHeight()-2);
+        c.setLocation(p);
+        canvas.add(c,0);
+    }
+
+    /**
+     * éšè—tooltip
+     * @param c
+     */
+    public void hideToolTip(JComponent c) {
+        final Container canvas = getCanvasComponent();
+        canvas.remove(c);
+    }
+
+    /**
+     * è®¾ç½®è·Ÿéšé¼ æ ‡ä¸€èµ·ç§»åŠ¨çš„å¯¹è±¡
+     * @param c
+     * @param offset ä¸é¼ æ ‡çš„ç›¸å¯¹ä½ç½®
+     */
+    public void setMovingObject(Animation anim,Point offset) {
+        GameCanvas canvas = window.getCanvas();
+        canvas.setMovingObject(anim, offset);
+    }
+
+    /**
+     * åˆ é™¤é¼ æ ‡éšåŠ¨å¯¹è±¡
+     */
+    public void removeMovingObject() {
+        GameCanvas canvas = window.getCanvas();
+        canvas.removeMovingObject();
+    }
+
+    /**
+     * æŸ¥æ‰¾æœ€è¿‘çš„é¢æ¿
+     * @param c
+     * @return
+     */
+    public Panel findPanel(Component c) {
+        for(;c!=null;) {
+            if (c instanceof Panel) {
+                break;
+            }
+            c=c.getParent();
+        }
+        return (Panel) c;
+    }
+    /**
+     * æ˜¾ç¤ºæˆ–éšè—æŒ‡å®šå¯¹è¯æ¡†
+     *
+     * @param autoSwap
+     */
+    public void showHideDialog(Panel dialog) {
+        if (dialog != null) {
+            Container canvas = getCanvasComponent();
+            if (dialog.getParent() == canvas) {
+                hideDialog(dialog);
+            } else {
+                showDialog(dialog);
+            }
+        }
+    }
+
+    /**
+     * æ˜¾ç¤ºé¢æ¿
+     * @param dialog
+     */
+    public void showDialog(Panel dialog) {
+        Container canvas = getCanvasComponent();
+        if (dialog != null && dialog.getParent() != canvas) {
+            //é˜»å¡æ‰§è¡Œåˆå§‹åŒ–äº‹ä»¶
+            dialog.handleEvent(new PanelEvent(dialog,"initial"));
+            canvas.add(dialog,0);
+        }
+    }
+    public void showModalDialog(final Panel dialog) {
+        System.out.println("showModalDialog: "+Thread.currentThread().getName());
+        Container canvas = getCanvasComponent();
+        if (dialog != null && dialog.getParent() != canvas) {
+            PanelListener listener = scriptEngine.loadUIScript(dialog.getName());
+            if(listener!=null) {
+                dialog.removeAllPanelListeners();
+                dialog.addPanelListener(listener);
+            }
+            //é˜»å¡æ‰§è¡Œåˆå§‹åŒ–äº‹ä»¶
+            dialog.handleEvent(new PanelEvent(dialog,"initial"));
+            canvas.add(dialog);
+            canvas.setComponentZOrder(dialog, 0);
+            EventDispatcher.pumpEvents(Thread.currentThread(), new Conditional() {
+                @Override
+                public boolean evaluate() {
+                    return (dialog.getParent()!=null && dialog.isVisible());
+                }
+            });
+            //TODO need to interrupt pump after close the panel!
+        }
+        System.out.println("exit showModalDialog: "+Thread.currentThread().getName());
+    }
+
+    /**
+     * éšè—é¢æ¿
+     * @param dialog
+     */
+    public void hideDialog(Panel dialog) {
+        if (dialog != null) {
+            Container canvas = getCanvasComponent();
+            if (dialog.getParent() == canvas) {
+                canvas.remove(dialog);
+                dialog.fireEvent(new PanelEvent(dialog,"dispose"));
+                DialogFactory.dispose(dialog.getName(),dialog);
+            }
+        }
+    }
+
+    /**
+     * æ˜¾ç¤ºé¢æ¿
+     * @param id
+     */
+    public void showDialog(String id) {
+        Panel dlg = null;
+        dlg = getDialog(id);
+        if(dlg!=null) {
+            showDialog(dlg);
+        }else {
+            System.err.println("è·å–Dialogå¤±è´¥ï¼š "+id);
+        }
+    }
+
+    /**
+     * è·å–Dialogï¼Œå¦‚æœæ­¤Dialogè¿˜æ²¡æœ‰åŠ è½½åˆ™è‡ªåŠ¨åŠ è½½
+     * @param id
+     * @return
+     */
+    public Panel getDialog(String id) {
+        Panel dlg;
+        if(isDebug()) {//å¦‚æœæ˜¯è°ƒè¯•çŠ¶æ€ï¼Œæ¯æ¬¡åŠ¨æ€åŠ è½½
+            dlg = DialogFactory.createDialog(id);
+            PanelListener listener = scriptEngine.loadUIScript(id);
+            if(listener!=null) {
+                dlg.removeAllPanelListeners();
+                dlg.addPanelListener(listener);
+            }
+        }else {
+            dlg = DialogFactory.getDialog(id,true);
+        }
+        return dlg;
+    }
+
+    public void showHideDialog(String id) {
+        Panel dlg = DialogFactory.getDialog(id,false);
+        System.out.println("showHideDialog: "+id+", "+dlg);
+        if(dlg!=null && dlg.isShowing()) {
+            hideDialog(dlg);
+        }else {
+            showDialog(id);
+        }
+    }
+
+    /**
+     * éšè—é¢æ¿
+     * @param id
+     */
+    public void hideDialog(String id) {
+        if(id!=null) {
+            Panel dlg = DialogFactory.getDialog(id,false);
+            if(dlg!=null)hideDialog(dlg);
+        }
+    }
+
+    /**
+     * è·å¾—å½“å‰çš„talkPanel
+     * @return
+     */
+    public TalkPanel getTalkPanel() {
+        Component comp = getCanvasComponent().getComponent(0);
+        if (comp instanceof TalkPanel) {
+            return (TalkPanel) comp;
+        }
+        return null;
+    }
+
+    private Container getCanvasComponent() {
+        return window.getCanvas().getComponent();
+    }
+
+    public static Cursor getCursor(String cursorId) {
+        Cursor cursor = cursors.get(cursorId);
+        if(cursor==null) {
+            boolean effect = Cursor.DEFAULT_CURSOR.equals(cursorId);
+            cursor = new Cursor(cursorId, effect);
+            cursors.put(cursorId, cursor);
+        }
+        return cursor;
+    }
+
+    public static void removeAllMouseListeners(Component comp) {
+        MouseListener[] mouseListeners = comp.getMouseListeners();
+        for (MouseListener mouseListener : mouseListeners) {
+            comp.removeMouseListener(mouseListener);
+        }
+        MouseMotionListener[] motionListeners = comp.getMouseMotionListeners();
+        for (MouseMotionListener motionListener : motionListeners) {
+            comp.removeMouseMotionListener(motionListener);
+        }
+        MouseWheelListener[] wheelListeners = comp.getMouseWheelListeners();
+        for (MouseWheelListener wheelListener : wheelListeners) {
+            comp.removeMouseWheelListener(wheelListener);
+        }
+    }
+
+    /** global action map */
+    //private static ActionMap actionMap = new ActionMap();
+    //private static InputMap inputMap = new InputMap();
+    //private static LoadingCanvas loadingCanvas;
+    //private static SceneCanvas sceneCanvas;
+    //private static BattleCanvas battleCanvas;
 //	private static FontMetrics fontMetrics;
-	//private static GameWindow gameWindow;
-	//private static DisplayMode displayMode;
-	//private static List<Listener> listeners = new ArrayList<Listener>();
-	//private static List<Panel> uiComponents = new ArrayList<Panel>();
+    //private static GameWindow gameWindow;
+    //private static DisplayMode displayMode;
+    //private static List<Listener> listeners = new ArrayList<Listener>();
+    //private static List<Panel> uiComponents = new ArrayList<Panel>();
 //	public static void addWindowListener(WindowListener handler) {
 //		gameWindow.addWindowListener(handler);
 //	}
@@ -367,7 +364,7 @@ public class UIHelper {
 //	public static void installUI() {
 //		String[] uiIds = new String[] {"mainwin"};
 //		for(String id : uiIds) {
-//			System.out.println("°²×°UI£º"+id);
+//			System.out.println("å®‰è£…UIï¼š"+id);
 //			Panel dlg = DialogFactory.getDialog(id, true);
 //			addUIComponent(dlg);
 //		}
@@ -379,7 +376,7 @@ public class UIHelper {
 //		listeners.add(new Listener(type, handler));
 //	}
 //	public static void installListener() {
-//		//TODO CanvasÇĞ»»Ê±£¬±ÜÃâÖØ¸´Ìí¼Ó¼àÌıÆ÷
+//		//TODO Canvasåˆ‡æ¢æ—¶ï¼Œé¿å…é‡å¤æ·»åŠ ç›‘å¬å™¨
 //		for (Listener l : listeners) {
 //			String strType = l.getType();
 //			try {
@@ -423,7 +420,7 @@ public class UIHelper {
 //	    getGameCanvas().setActionMap(getActionMap());
 //	    Component[] precedingComps = getGameCanvas().getComponents();
 //	    showUIComponents();
-//	    //»¹Ô­ÏÈÇ°´ò¿ªµÄÃæ°åµÈ
+//	    //è¿˜åŸå…ˆå‰æ‰“å¼€çš„é¢æ¿ç­‰
 //	    for (int i = 0; i < precedingComps.length; i++) {
 //	    	getGameCanvas().add(precedingComps[i],0);
 //		}
@@ -445,7 +442,7 @@ public class UIHelper {
 //	//			}
 //				return p;
 //			} catch (Exception e) {
-//				System.out.println("»ñÈ¡Êó±êÎ»ÖÃÊ§°Ü£¡"+e.getMessage());
+//				System.out.println("è·å–é¼ æ ‡ä½ç½®å¤±è´¥ï¼"+e.getMessage());
 //				//e.printStackTrace();
 //			}
 //			return null;

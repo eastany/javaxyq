@@ -119,7 +119,7 @@ public class XmlDataLoader {
 	}	
 	public void parseActions() {
 		try {
-			parser.parse(CacheManager.getInstance().getFile("xml/actions.xml"), new ActionHandler());
+			parser.parse(CacheManager.getInstance().getFile("res/xml/actions.xml"), new ActionHandler());
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

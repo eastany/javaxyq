@@ -3,6 +3,7 @@
   <component name="EclipseModuleManager">
     <libelement value="jar://$MODULE_DIR$/lib/appFramework-1.0.jar!/" />
     <libelement value="jar://$MODULE_DIR$/lib/jide.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/lib/forms_rt.jar!/" />
     <src_description expected_position="0">
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
@@ -28,6 +29,15 @@
       <library name="jide.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/jide.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="forms_rt.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/forms_rt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

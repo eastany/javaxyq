@@ -586,8 +586,8 @@ public class DefaultTileMapProvider implements MapProvider {
         Scene scene = dataManager.findScene(Integer.valueOf(sceneId));
         if(scene!=null) {
             try {
-            	String path = String.format("scene/%s.map", sceneId);
-				String music = String.format("music/%s.mp3", sceneId);;
+            	String path = String.format("res/scene/%s.map", sceneId);
+				String music = String.format("res/music/%s.mp3", sceneId);;
 				MapConfig cfg = new MapConfig(sceneId, scene.getName(), path, music);
                 File file = CacheManager.getInstance().getFile(cfg.getPath());
                 mapFile = new MyRandomAccessFile(file, "r");

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ui;
 
 import java.awt.event.MouseEvent;
@@ -31,17 +28,17 @@ import com.javaxyq.widget.Animation;
  * @date 2011-5-2 create
  */
 public class select_role extends PanelHandler implements MouseListener {
-	
+
 	private int profileIndex;
-	
+
 	String prefix = "icon_role";
 
 	private HashMap<String, String> charNames;
-	
+
 	private List<Label> profileLabels;
 
 	private List<Profile> profiles;
-	
+
 	public void initial(PanelEvent evt) {
 		super.initial(evt);
 		profileIndex = 0;
@@ -60,7 +57,7 @@ public class select_role extends PanelHandler implements MouseListener {
 	public void dispose(PanelEvent evt) {
 		System.out.println("dispose: select_role ");
 	}	
-	
+
 //	public void selectRole(ActionEvent evt) {
 //		try {
 //			profileName = evt.getArgumentAsString(0);
@@ -72,7 +69,7 @@ public class select_role extends PanelHandler implements MouseListener {
 //			application.getUIHelper().prompt("¼ÓÔØÓÎÏ·´æµµÊ§°Ü!", 3000);
 //		}
 //	}
-	
+
 	public void createRole(ActionEvent evt) {
 		Panel dlg = helper.getDialog("create_role");
 		if(dlg != null) {
@@ -80,7 +77,7 @@ public class select_role extends PanelHandler implements MouseListener {
 			helper.showDialog(dlg);
 		}
 	}
-	
+
 	public void goback(ActionEvent evt) {
 		Panel dlg = helper.getDialog("mainmenu");
 		if(dlg != null) {
@@ -88,7 +85,7 @@ public class select_role extends PanelHandler implements MouseListener {
 			helper.showDialog(dlg);
 		}
 	}
-	
+
 	public void gonext(ActionEvent evt) {
 		if(profileIndex>=profiles.size()) {
 			return;
@@ -129,7 +126,7 @@ public class select_role extends PanelHandler implements MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void displayProflieInfo() {
 		if(profileIndex>=profiles.size()) {
 			return;
@@ -199,5 +196,5 @@ public class select_role extends PanelHandler implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 	}
 
-		
+
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.javaxyq.core;
 
 import java.awt.Image;
@@ -33,7 +30,7 @@ import com.javaxyq.widget.Player;
 public class DesktopApplication extends BaseApplication {
 
 	private GameWindow window;
-	
+
 	protected GameWindow createWindow() {
 		window = new DesktopWindow();
 		window.init(context);
@@ -51,7 +48,7 @@ public class DesktopApplication extends BaseApplication {
 //		loadingCanvas.playMusic();
 		CacheManager.getInstance().addDownloadListener(loadingCanvas);
 	}
-	
+
 	@Override
 	protected void loadData() {
 		super.loadData();
@@ -68,10 +65,10 @@ public class DesktopApplication extends BaseApplication {
 		sceneCanvas.changeScene(context.getScene(), p.x, p.y);
 		System.out.println("loaded scene: "+new java.util.Date());
 	}
-	
+
 	@Override
 	protected void loadResources() {
-		
+
 		//setDebug(false);
 		//setShowCopyright(false);
 		//setApplicationName("JavaXYQ ");
@@ -79,10 +76,10 @@ public class DesktopApplication extends BaseApplication {
 		//setHomeURL("http://javaxyq.googlecode.com/");
 		promptMsg("loading resource ...");
 		window.setGameCursor(Cursor.DEFAULT_CURSOR);
-		
+
 		//showCopyright();
 		//promptMsg("loading groovy ...");
-		
+
 		promptMsg("loading actions ...");
 		XmlDataLoader loader = new XmlDataLoader(window);
 		loader.parseActions();
@@ -92,19 +89,19 @@ public class DesktopApplication extends BaseApplication {
 		//XmlDataLoader.defTalks();
 		promptMsg("loading ui ...");
 		loadUIs(loader);
-		
+
 		//task
 		getTaskManager().register("school", "com.javaxyq.task.SchoolTaskCoolie");
 		ApplicationHelper.getApplication().getItemManager().regItem(ItemTypes.TYPE_MEDICINE, new MedicineItemHandler());
 		ApplicationHelper.getApplication().getItemManager().regItem(ItemTypes.TYPE_WEAPON, new WeaponItemHandler());
 
 	}
-	
+
 	@Override
 	protected void finish() {
 		super.finish();
 		showMainMenuCanvas();
-		
+
 		//后台预加载场景
 		//preloadLastProfile();
 	}
@@ -113,12 +110,12 @@ public class DesktopApplication extends BaseApplication {
 		Image img = SpriteFactory.loadImage("/wzife/login/background.jpg");
 		MainMenuCanvas menuCanvas = new MainMenuCanvas(img, window.getContentWidth(), window.getContentHeight());
 		Panel mainmenu = getUIHelper().getDialog("mainmenu");
-		
+
 		Canvas currentCanvas = (Canvas) window.getCanvas(); 
 		//currentCanvas.stopMusic();
 		currentCanvas.dispose();
 		CacheManager.getInstance().removeDownloadListener(currentCanvas);
-		
+
 		//切换到主菜单
 		window.setCanvas(menuCanvas);
 		getUIHelper().showDialog(mainmenu);
@@ -159,17 +156,17 @@ public class DesktopApplication extends BaseApplication {
 			CacheManager.getInstance().addDownloadListener(sceneCanvas);
 		}
 	}
-	
+
 	private void loadUIs(XmlDataLoader loader) {
-		File dir = CacheManager.getInstance().getFile("ui");
+		File dir = CacheManager.getInstance().getFile("res/ui");
 		String[] files = dir.list(new SuffixFilenameFilter(".xml"));
 		for (int i = 0; i < files.length; i++) {
-			loader.loadUI("ui/"+files[i]);
+			loader.loadUI("res/ui/"+files[i]);
 		}
 		window.prepareUI();
-		
+
 	}
-	
+
 	public void playMusic() {
 		window.getCanvas().playMusic();
 	}
